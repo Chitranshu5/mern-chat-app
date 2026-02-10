@@ -7,7 +7,6 @@ import { useEffect } from "react";
 const Sidebar = () => {
   const { selectedUser, setSelectedUser, users, getUsers, isUsersLoading } =
     useChatStore();
-
   const { onlineUsers } = useAuthStore();
 
   useEffect(() => {
@@ -15,13 +14,14 @@ const Sidebar = () => {
   }, [getUsers]);
 
   if (isUsersLoading) return <SidebarSkeleton />;
+
   return (
-    <aside className="h-full w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
+    <aside className="h-full w-full md:w-20 lg:w-72 border-r border-base-300 flex flex-col transition-all duration-200">
       <div className="border-b border-base-300 w-full p-5">
         <div className="flex items-center gap-2">
           <Users className="size-6" />
+          <span className="font-semibold hidden lg:block">Contacts</span>
         </div>
-        {/* TODO: Online filter toggle */}
       </div>
 
       <div className="overflow-y-auto w-full py-3">
@@ -48,7 +48,6 @@ const Sidebar = () => {
                 alt={user.name}
                 className="size-12 object-cover rounded-full"
               />
-
               {onlineUsers.includes(user._id) && (
                 <span
                   className="absolute bottom-0 right-0 size-3 bg-green-500 
@@ -57,8 +56,8 @@ const Sidebar = () => {
               )}
             </div>
 
-            {/* User info - only visible on larger screens */}
-            <div className="hidden lg:block text-left min-w-0">
+            {/* User info - visible on mobile and larger screens, hidden on md */}
+            <div className="block md:hidden lg:block text-left min-w-0 flex-1">
               <div className="font-medium truncate">{user.name}</div>
               <div className="text-sm text-zinc-400">
                 {onlineUsers.includes(user._id) ? "Online" : "Offline"}
@@ -70,4 +69,5 @@ const Sidebar = () => {
     </aside>
   );
 };
+
 export default Sidebar;
